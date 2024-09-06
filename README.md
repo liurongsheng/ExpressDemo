@@ -186,3 +186,43 @@ server start
 “洋葱皮"：从外到里面一层一层包裹
 
 调用的过程：从左边最外层 ---> 最里面 ---> 从右边最外层出来
+
+## 后端服务的分层
+
+- 路由--将请求跳转到对应的控制层
+- 控制层--对参数进行检查校验，不合格直接返回错误
+- 服务层--拿参数进行业务处理，查询，统计等
+- ORM 数据访问层/sql--去数据库取数据
+- 数据库
+
+数据访问的方式:
+
+- ORM--通过 js 对象的方式访问数据，不需要写sql
+- sql--通过写脚本的方式查询数据
+
+## ORM 数据访问框架-Sequelize
+
+[sequelize](https://www.sequelize.cn/core-concepts/getting-started)
+
+需要数据模型对象去访问数据
+
+数据模型对象--数据库表 一一对应
+
+## 创建模型对象
+
+可以通过脚本的方式自动生成所有的数据模型对象
+
+脚本里面需要配置数据库的连接，生成数据模型对象
+
+`npm install -g sequelize sequelize-auto mysql`
+
+使用脚本 `sequelize-modal.sh` 通过 `sequelize-auto` 把数据库表生成到 models 目录下
+
+win: cmder/git bashshsequelize-model.sh
+
+## 加载模型对象
+
+在 modules 下创建 index.js 用于加载所有模型文件
+其它模块需要使用模型时，只需引入 index
+
+`npm install -S sequelize mysql mysql2`
