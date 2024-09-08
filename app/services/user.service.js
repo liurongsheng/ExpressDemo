@@ -68,36 +68,48 @@ export async function findPage(pageNo = 1, pageSize = 20, name) {
   // 读取数据第起位置，第1页和第2页的起始读取数据位置不同 因为db从0开始记录数据行
   let offset = (pageNo - 1) * pageSize;
   let result = {};
+
   if (name) {
     var d = await sequelize.query(
       `SELECT * from jd_user WHERE account LIKE ? LIMIT ${offset},${limit}`,
       { replacements: ["%" + name + "%"], model: User }
     );
     result.data = d;
-    //模糊查询总条数
+    // 模糊查询总条数
     d = await sequelize.query(
       `select count(*) num from jd_user where account LIKE ?`,
       { replacements: ["%" + name + "%"] }
     );
     if (d && d.length > 0) {
       result.rows = d[0][0].num;
-      //计算总页数
+      // 计算总页数
       result.pages = Math.ceil(d[0][0].num / pageSize);
     }
   } else {
     var d = await User.findAll({
-      limit: Number(limit), //查询limit条数据
-      offset: Number(offset), //从offset数据行位置开始查询
+      limit: Number(limit), // 查询 limit 条数据
+      offset: Number(offset), // 从 offset 数据行位置开始查询
+      order: [["id", "DESC"]], // 排序
     });
     result.data = d;
-    //总条数
+    // 总条数
     d = await sequelize.query("select count(*) as num from jd_user");
     if (d && d.length > 0) {
       result.rows = d[0][0].num;
-      //计算总页数
+      // 计算总页数
       result.pages = Math.ceil(d[0][0].num / pageSize);
     }
   }
 
   return result;
 }
+
+
+// 关联查询
+// SELECT
+// 	u.account,
+// 	r.role_name 
+// FROM
+// 	jd_user u
+// 	LEFT JOIN jd_user_role ur ON u.id = ur.user_id
+// 	LEFT JOIN jd_role r on ur.role_id = r.id

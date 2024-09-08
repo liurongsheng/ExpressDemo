@@ -226,3 +226,71 @@ win: cmder/git bashshsequelize-model.sh
 其它模块需要使用模型时，只需引入 index
 
 `npm install -S sequelize mysql mysql2`
+
+## 实现基于 sequelize 框架的 增删改查
+
+- 实现 service 中增删改查逻辑
+- 在控制台中调用 service 中的方法
+
+## 分页查询
+
+前端传参数：
+
+- 起始页码 pageNo
+- 分页大小 pageSize
+
+后端返回:
+
+- 总条数 total
+- 总页数 totalPage，9/2 = 4.5，向上取整 `Math.ceil(4.5) = 5`
+- 当前页码 pageNo
+
+## Jwt 令牌权限控制 (Json Web Token)
+
+`npm i -S jsonwebtoken`
+
+cookie 存储在浏览器的本地，每次请求都会携带 cookie，大小闲置在 4k，一般不会超过 4k
+
+session 存储在服务器内存中，不是永久保存，每次请求都会携带 sessionId
+
+```text
+客户端     服务端
+
+用户使用账号密码登录
+----->
+          服务端验证并生成 session 对象
+
+服务端将 sessionId 发送给客户端
+<-----
+
+客户端在浏览器中保存 sessionId
+
+客户端每次请求都携带 sessionId到服务器
+----->
+
+           服务端收到 sessionId 后，与之前保存的对比以确认用户身份 
+```
+
+- 这种认证方式会大量占用服务器的 session 存储
+- chrome 80版本 http协议默认不带cookie
+
+JWT 过期--刚过有效期半小时内
+JWT 无效--有效期超过半小时
+
+JWT自带过期时间（exp claim），一旦过期，令牌自动失效，生成后的有效期不能被篡改，只可以重新生成
+
+## nodemon
+
+在保存项目文件时，自动重启服务
+
+`npm i -S nodemon`
+
+## 项目部署
+
+window
+
+- 阿里云、腾讯云、华为云，独立服务器
+- 远程桌面，直接远程到服务器上
+- 把项目文件复制过去
+- 安装依赖，启动服务
+- 打开对应的服务端口，如4000

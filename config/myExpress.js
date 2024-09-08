@@ -36,7 +36,6 @@ export default function (prot) {
       await next();
       console.log("响应结束...");
     } else {
-      console.log("不匹配的路径...");
       next();
     }
   });

@@ -1,4 +1,4 @@
-//加载逻辑与动态路由一样
+// 加载逻辑与动态路由一样
 import fs from "fs";
 import path from "path";
 import logger from "../utils/logger";
@@ -16,14 +16,14 @@ try {
   logger.error(e.getMessage(), e);
 }
 
-//__dirname 当前文件所在目录
+// __dirname 当前文件所在目录
 fs.readdirSync(__dirname)
   .filter((file) => file != "index.js" && file != "init-models.js")
   .forEach((file) => {
     logger.info("file:" + file);
-    //拿到文件的绝对路径
+    // 拿到文件的绝对路径
     var f = path.join(__dirname, file);
-    //   logger.info("file:"+f);
+    // logger.info("file:"+f);
     require(f)(sequelize, Sequelize.DataTypes);
   });
 
